@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,9 +15,20 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('auth:api', ['except' => ['login', 'signup']]);
     }
 
+    /**
+     * Signup and create user
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function signup(Request $request)
+    {
+        User::create($request->all());
+        return $this->login($request);
+    }
     /**
      * Get a JWT via given credentials.
      *
@@ -27,7 +39,7 @@ class AuthController extends Controller
         $credentials = request(['email', 'password']);
 
         // return $credentials;
-        if (! $token = auth()->attempt($credentials)) {
+        if (!$token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
@@ -78,10 +90,10 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'expires_in' => auth()->factory()->getTTL() * 60,
         ]);
     }
-    
+
     /**
      * Get the guard to be used during authentication.
      *
