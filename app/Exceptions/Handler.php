@@ -50,10 +50,14 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        // for handling exception for jwt middleware
         if ($exception instanceof TokenBlacklistedException) {
             return response(['error' => 'Token is blacklisted, get a new one'], Response::HTTP_BAD_REQUEST);
         }
         else if ($exception instanceof TokenInvalidException) {
+            return response(['error' => 'Token is invalid'], Response::HTTP_BAD_REQUEST);
+        }
+        else if ($exception instanceof TokenExpiredException) {
             return response(['error' => 'Token is invalid'], Response::HTTP_BAD_REQUEST);
         }
         else if ($exception instanceof JWTException) {
