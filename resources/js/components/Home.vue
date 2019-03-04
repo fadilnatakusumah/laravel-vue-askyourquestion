@@ -15,29 +15,54 @@
 export default {
   data: () => {
     return {
-      title: "Welcome"
+      title: ""
     };
   },
-  mounted() {
-    const { path } = this.$router.history.current;
-    let getPath = path;
-
-    getPath = getPath.substring(1, getPath.length);
-    getPath = getPath.charAt(0).toUpperCase() + getPath.substring(1);
-    this.title = getPath;
+  methods: {
+    setUrl() {
+      const { path } = this.$router.history.current;
+      let getPath = path;
+      getPath = getPath.substring(1, getPath.length);
+      getPath = getPath.charAt(0).toUpperCase() + getPath.substring(1);
+      this.title = getPath;
+    }
+  },
+  beforeMount() {
+    this.setUrl();
+  },
+  beforeUpdate() {
+    this.setUrl();
+  },
+  watch: {
+    title: function() {}
   }
+  // methods: {
+  //   setTitle() {
+  //     const { path } = this.$router.history.current;
+  //     let getPath = path;
+
+  //     getPath = getPath.substring(1, getPath.length);
+  //     getPath = getPath.charAt(0).toUpperCase() + getPath.substring(1);
+  //     return getPath;
+  //   }
+  // },
 };
 </script>
 
 <style scoped>
 .background-gray {
   background-color: #f8f8f8;
+  min-height: 400px;
 }
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
+.fade-enter-to,
+.fade-leave-to {
+  opacity: 1;
+  transition: 1.5s;
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+/* .fade-leave-active below version 2.1.8 */
+.fade-enter,
+.fade-leave {
+  transition: 1.5s;
   opacity: 0;
 }
 </style>

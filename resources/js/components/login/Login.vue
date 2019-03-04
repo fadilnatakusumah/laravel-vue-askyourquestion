@@ -57,7 +57,7 @@
         </div>
         <footer class="card-footer">
           <p class="card-footer-item">
-            <button class="button is-primary" type="submit">Log in</button>
+            <button class="button is-primary" id="submit-login" type="submit">Log in</button>
           </p>
           <!-- <p class="card-footer-item">
           <a class="button is-primary">Primary</a>
@@ -69,23 +69,24 @@
 </template>
 
 <script>
-import axios from "axios";
 
 export default {
   data() {
     return {
       form: {
-        email: "",
-        password: ""
+        email: '',
+        password: ''
       }
     };
   },
   methods: {
-    loginHandler(event) {
-      axios
-        .post("/api/auth/login", this.form)
-        .then(res => console.log(res.data))
-        .catch(err => console.log(err));
+    loginHandler() {
+      $("#submit-login").toggleClass("is-loading");
+      setTimeout(() => {
+        User.loginHandler(this.form, () => {
+          $("#submit-login").toggleClass("is-loading");
+        });
+      }, 3000);
     }
   }
 };

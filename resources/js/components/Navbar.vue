@@ -35,12 +35,11 @@
       <div class="navbar-end">
         <div class="navbar-item">
           <div class="buttons">
-            <a class="button is-primary">
+            <!-- <a class="button is-primary">
               <strong>Sign up</strong>
-            </a>
-            <a class="button is-light">
-              <router-link to="/login">Log in</router-link>
-            </a>
+            </a>-->
+            <button class="button is-light" v-if="isLoggedIn" @click="logoutHandler">Log out</button>
+              <router-link class="button is-primary" v-else to='/login'>Log in</router-link>
           </div>
         </div>
       </div>
@@ -49,13 +48,31 @@
 </template>
 <script>
 export default {
+  data() {
+    return {
+      isLoggedIn: User.isLoggedIn()
+    };
+  },
   methods: {
     toggleClass: function() {
       var burger = document.querySelector(".navbar-burger");
       var navbar = document.querySelector(".navbar-menu");
       burger.classList.toggle("is-active");
       navbar.classList.toggle("is-active");
+    },
+    logoutHandler() {
+      const check = confirm("Are you sure you want to log out?");
+      if (check) {
+        alert("Logout");
+        User.logout();
+        return this.$router.push('/login');
+      } else {
+        alert("Cancel");
+      }
     }
+  },
+  beforeUpdate(){
+      console.log('is logged in?', this.isLoggedIn);
   }
 };
 </script>

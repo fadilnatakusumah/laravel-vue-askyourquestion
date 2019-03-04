@@ -6,8 +6,19 @@
 
 // require('./bootstrap');
 
+import Vue from 'vue';
+import axios from "axios";
+
+import router from './router';
 window.Vue = require('vue');
 
+import User from './helpers/User';
+window.User = User;
+
+import AppStorage from './helpers/AppStorage';
+window.AppStorage = AppStorage;
+window.axios = axios;
+console.log(User.getId());
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -33,8 +44,6 @@ Vue.component('navbar-component', require('./components/Navbar.vue').default);
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-import Vue from 'vue';
-import router from './router';
 
 const app = new Vue({
     el: '#app',
